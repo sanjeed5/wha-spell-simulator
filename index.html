@@ -165,6 +165,23 @@
         </aside>
       </main>
 
+      <div class="result-overlay" id="resultOverlay" hidden>
+        <div class="result-card" id="resultCard">
+          <p class="result-kicker" id="resultKicker">Spell Sealed</p>
+          <h2 class="result-title" id="resultTitle">Flame Adept</h2>
+          <div class="result-sigil" id="resultSigil"></div>
+          <p class="result-line" id="resultLine">Fire · column</p>
+          <div class="result-meters" id="resultMeters"></div>
+          <p class="result-blurb" id="resultBlurb"></p>
+          <div class="result-actions">
+            <button type="button" class="result-btn primary" id="resultSaveButton">Save image</button>
+            <button type="button" class="result-btn" id="resultCopyButton">Copy result</button>
+            <button type="button" class="result-btn" id="resultAgainButton">Cast again</button>
+          </div>
+          <button type="button" class="result-dismiss" id="resultDismissButton">Keep looking</button>
+        </div>
+      </div>
+
       <footer class="app-footer">
         <p>
           Unofficial fan-made spell diagram simulator inspired by Witch Hat Atelier. This project is not affiliated with,

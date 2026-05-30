@@ -11,6 +11,7 @@ import { getElements } from "./ui/elements.js";
 import { renderDictionaryReference } from "./ui/dictionaryReferenceView.js";
 import { updateStatus, updateSummary } from "./ui/spellSummaryView.js";
 import { setupTabs } from "./ui/tabs.js";
+import { createResultScreen } from "./ui/resultScreen.js";
 
 const elements = getElements();
 const store = createStrokeStore();
@@ -21,6 +22,8 @@ let pipeline = null;
 let spellIR = null;
 let previousRing = null;
 let resizeObserver = null;
+let resultScreen = null;
+let lastSealState = null;
 
 function setupCanvasSizing() {
   resizeObserver = setupResponsiveCanvasSizing({
@@ -48,6 +51,32 @@ function recompute() {
   spellIR = compileSpell({ glyphAST: pipeline.glyphAST, dictionary, config: CONFIG });
   updateSummary({ elements, store, capture, pipeline, spellIR });
   updateDiagnostics({ elements, store, pipeline, spellIR });
+  detectSeal();
+}
+
+function detectSeal() {
+  const ringClosed = Boolean(pipeline?.ring?.complete);
+  const hasUnsupportedRings = Boolean(pipeline?.ring?.unsupportedMultipleRings?.length);
+  const hasUnsupportedSigils = Boolean(pipeline?.glyphAST?.unsupportedMultipleSigils?.length);
+  const sealState = spellIR?.active
+    ? "cast"
+    : ringClosed || hasUnsupportedRings || hasUnsupportedSigils
+      ? "fizzle"
+      : null;
+
+  if (sealState && sealState !== lastSealState) {
+    resultScreen?.scheduleShow(sealState, spellIR);
+  } else if (!sealState) {
+    resultScreen?.hide();
+  }
+  lastSealState = sealState;
+}
+
+function resetCanvas() {
+  store.clear();
+  previousRing = null;
+  lastSealState = null;
+  recompute();
 }
 
 function animationFrame(timestamp) {
@@ -82,13 +111,12 @@ function setupControls() {
   elements.undoButton.addEventListener("click", () => {
     store.undo();
     previousRing = null;
+    lastSealState = null;
     recompute();
   });
 
   elements.clearButton.addEventListener("click", () => {
-    store.clear();
-    previousRing = null;
-    recompute();
+    resetCanvas();
   });
 
   elements.guidesToggle.addEventListener("change", () => {
@@ -113,6 +141,7 @@ async function init() {
     effectCanvas: elements.effectCanvas,
     config: CONFIG
   });
+  resultScreen = createResultScreen({ elements, onCastAgain: resetCanvas });
   capture = new DrawingCapture(elements.glyphCanvas, store, CONFIG, {
     onPreview: () => {},
     onCommit: recompute
