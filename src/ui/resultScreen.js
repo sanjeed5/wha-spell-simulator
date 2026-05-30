@@ -180,7 +180,7 @@ function shareText({ spellIR, outcome, title }) {
   ].join("\n");
 }
 
-export function createResultScreen({ elements, onCastAgain }) {
+export function createResultScreen({ elements, onCastAgain, sealReplay }) {
   const overlay = document.querySelector("#resultOverlay");
   const card = document.querySelector("#resultCard");
   const kicker = document.querySelector("#resultKicker");
@@ -190,12 +190,17 @@ export function createResultScreen({ elements, onCastAgain }) {
   const metersEl = document.querySelector("#resultMeters");
   const blurbEl = document.querySelector("#resultBlurb");
   const saveButton = document.querySelector("#resultSaveButton");
+  const replayButton = document.querySelector("#resultReplayButton");
   const copyButton = document.querySelector("#resultCopyButton");
   const againButton = document.querySelector("#resultAgainButton");
   const dismissButton = document.querySelector("#resultDismissButton");
 
   let revealTimer = null;
   let current = null;
+
+  if (replayButton) {
+    replayButton.hidden = !sealReplay?.isSupported?.();
+  }
 
   function hide() {
     if (revealTimer) {
@@ -297,6 +302,29 @@ export function createResultScreen({ elements, onCastAgain }) {
       copyButton.textContent = "Copy failed";
       setTimeout(() => (copyButton.textContent = "Copy result"), 1500);
     }
+  });
+
+  replayButton?.addEventListener("click", async () => {
+    if (!sealReplay) {
+      return;
+    }
+    replayButton.disabled = true;
+    replayButton.textContent = "Preparing clip…";
+    const blob = await sealReplay.waitForClip();
+    replayButton.disabled = false;
+    if (!blob) {
+      replayButton.textContent = "Clip unavailable";
+      setTimeout(() => (replayButton.textContent = "Save clip"), 1800);
+      return;
+    }
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = `spell-atelier-${current?.outcome ?? "replay"}.webm`;
+    link.click();
+    setTimeout(() => URL.revokeObjectURL(url), 1000);
+    replayButton.textContent = "Saved!";
+    setTimeout(() => (replayButton.textContent = "Save clip"), 1500);
   });
 
   againButton.addEventListener("click", () => {

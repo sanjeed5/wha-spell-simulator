@@ -1122,6 +1122,10 @@ body:not(.sigil-maker-page) .app-shell {
 }
 
 /* ---- Post-seal result screen ---- */
+.result-overlay[hidden] {
+  display: none !important;
+}
+
 .result-overlay {
   position: fixed;
   inset: 0;
