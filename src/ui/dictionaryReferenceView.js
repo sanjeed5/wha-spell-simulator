@@ -100,6 +100,9 @@ function renderSampleSpellCard(sample) {
           <div><dt>Element</dt><dd>${escapeHtml(sample.element ?? "none")}</dd></div>
           <div><dt>Manifestations</dt><dd>${escapeHtml(manifestations)}</dd></div>
         </dl>
+        <button type="button" class="trace-load-button" data-trace-spell="${escapeHtml(sample.id)}">
+          Load trace guide
+        </button>
       </div>
     </article>
   `;

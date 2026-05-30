@@ -8,6 +8,8 @@ export function getElements() {
     clearButton: document.querySelector("#clearButton"),
     guidesToggle: document.querySelector("#guidesToggle"),
     diagnosticsToggle: document.querySelector("#diagnosticsToggle"),
+    traceToggle: document.querySelector("#traceToggle"),
+    traceBanner: document.querySelector("#traceBanner"),
     dictionaryRootPanel: document.querySelector("#dictionaryRootPanel"),
     diagnosticRootPanel: document.querySelector("#diagnosticRootPanel"),
     panelTabButtons: [...document.querySelectorAll(".panel-tab-button")],

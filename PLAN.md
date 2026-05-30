@@ -349,19 +349,18 @@ screenshots. This is both legally safer and keeps a consistent "original magical
 
 ## 11. Work already started in this branch
 
-A first prototype of the **post-seal result screen** is included:
+| Feature | Status |
+|---------|--------|
+| `PLAN.md` | Done |
+| `HANDOFF.md` | Done — cloud agent quick start |
+| Post-seal result screen | Done — needs browser QA |
+| Trace mode v0 | Done — ghost overlay, first-visit Fire Shoot, load from dictionary |
+| Cloudflare Pages deploy | Live at https://wha-spell-simulator.pages.dev (Git → `main`) |
+| `npm test` fix | Done |
 
-- `src/ui/resultScreen.js` — cast/fizzle result overlay, witch-title generation,
-  humanized fizzle reasons + roasts, **Spell Card PNG composer**, emoji **share text**,
-  Save image / Copy result / Cast again / Keep-looking actions.
-- `index.html` — result overlay markup.
-- `assets/css/styles.css` — result overlay styles (parchment card, Cinzel headings).
-- `src/main.js` — seal-transition detection (`detectSeal`), `resetCanvas`, wiring.
+**Key files:** `src/ui/resultScreen.js`, `src/ui/traceMode.js`, `src/renderer/traceOverlayRenderer.js`
 
-**Status:** code is in place and serves without import errors; **not yet verified in a live
-browser draw-test.** Next agent should run `npm run dev`, draw + seal a spell, and confirm the
-overlay appears for both cast and fizzle, then iterate on timing, card layout, and add the
-clip recorder.
+**Next agent:** read `HANDOFF.md`, then build Seal Replay recorder.
 
 ### How to run
 ```sh

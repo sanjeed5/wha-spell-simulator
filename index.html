@@ -15,7 +15,7 @@
           <h1>Witch Hat Atelier Spell Simulator</h1>
         </div>
         <div class="header-actions">
-          <a class="header-link" href="https://github.com/ytnrvdf/wha-spell-simulator" target="_blank" rel="noreferrer">GitHub</a>
+          <a class="header-link" href="https://github.com/sanjeed5/wha-spell-simulator" target="_blank" rel="noreferrer">GitHub</a>
         </div>
       </header>
 
@@ -30,6 +30,10 @@
             <label class="toggle">
               <input type="checkbox" id="guidesToggle" checked>
               <span>Guides</span>
+            </label>
+            <label class="toggle">
+              <input type="checkbox" id="traceToggle" checked>
+              <span>Trace guides</span>
             </label>
             <label class="toggle">
               <input type="checkbox" id="diagnosticsToggle">
@@ -75,6 +79,7 @@
               Draw an open spell ring. Place sigils in the center and signs around them.
               When everything is ready, seal the circle to awaken the spell.
             </p>
+            <p class="trace-banner" id="traceBanner" hidden></p>
             <canvas id="glyphCanvas" width="1200" height="800"></canvas>
             <canvas id="effectCanvas" width="1200" height="800"></canvas>
           </div>

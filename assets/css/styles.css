@@ -416,6 +416,40 @@ body:not(.sigil-maker-page) .app-shell {
   opacity: 0;
 }
 
+.trace-banner {
+  position: absolute;
+  top: 22px;
+  right: 24px;
+  z-index: 2;
+  width: min(340px, calc(100% - 48px));
+  margin: 0;
+  padding: 10px 12px;
+  border: 1px solid rgba(42, 121, 135, 0.35);
+  border-radius: 8px;
+  background: rgba(255, 247, 219, 0.88);
+  color: var(--teal);
+  font-size: 14px;
+  line-height: 1.35;
+  pointer-events: none;
+}
+
+.trace-load-button {
+  margin-top: 10px;
+  padding: 8px 12px;
+  border: 1px solid var(--panel-line);
+  border-radius: 6px;
+  background: #fffdf3;
+  color: var(--ink);
+  font-family: "Cinzel", serif;
+  font-size: 12px;
+  letter-spacing: 0.04em;
+  cursor: pointer;
+}
+
+.trace-load-button:hover {
+  background: rgba(42, 121, 135, 0.08);
+}
+
 #glyphCanvas.locked {
   cursor: not-allowed;
 }

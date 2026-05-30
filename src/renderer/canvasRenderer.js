@@ -7,6 +7,7 @@ import {
 } from "./glyphOverlayRenderer.js";
 import { drawGuides, drawPaper } from "./paperRenderer.js";
 import { SpellEffectRenderer } from "./spellEffectRenderer.js";
+import { drawTraceOverlay } from "./traceOverlayRenderer.js";
 
 function getActivatedStrokeIds(pipeline) {
   if (!pipeline) {
@@ -29,10 +30,14 @@ export class CanvasRenderer {
     this.config = config;
   }
 
-  renderGlyph({ strokes, currentStroke, pipeline, showGuides, showDebug }) {
+  renderGlyph({ strokes, currentStroke, pipeline, showGuides, showDebug, traceSampleSpell }) {
     const width = this.glyphCanvas.width;
     const height = this.glyphCanvas.height;
     drawPaper(this.glyphCtx, width, height);
+
+    if (traceSampleSpell) {
+      drawTraceOverlay(this.glyphCtx, traceSampleSpell, width, height);
+    }
 
     if (showGuides) {
       drawGuides(this.glyphCtx, pipeline?.ring, width, height, this.config);

@@ -12,6 +12,7 @@ import { renderDictionaryReference } from "./ui/dictionaryReferenceView.js";
 import { updateStatus, updateSummary } from "./ui/spellSummaryView.js";
 import { setupTabs } from "./ui/tabs.js";
 import { createResultScreen } from "./ui/resultScreen.js";
+import { createTraceMode } from "./ui/traceMode.js";
 
 const elements = getElements();
 const store = createStrokeStore();
@@ -23,6 +24,7 @@ let spellIR = null;
 let previousRing = null;
 let resizeObserver = null;
 let resultScreen = null;
+let traceMode = null;
 let lastSealState = null;
 
 function setupCanvasSizing() {
@@ -65,6 +67,9 @@ function detectSeal() {
       : null;
 
   if (sealState && sealState !== lastSealState) {
+    if (sealState === "cast") {
+      traceMode?.markCastSuccess();
+    }
     resultScreen?.scheduleShow(sealState, spellIR);
   } else if (!sealState) {
     resultScreen?.hide();
@@ -85,7 +90,8 @@ function animationFrame(timestamp) {
     currentStroke: capture.getCurrentStroke(),
     pipeline,
     showGuides: elements.guidesToggle.checked,
-    showDebug: elements.diagnosticsToggle.checked
+    showDebug: elements.diagnosticsToggle.checked,
+    traceSampleSpell: traceMode?.isEnabled() ? traceMode.getSampleSpell() : null
   });
 
   if (spellIR.active) {
@@ -149,6 +155,9 @@ async function init() {
 
   try {
     dictionary = await loadDictionary();
+    traceMode = createTraceMode({ dictionary, elements, onChange: () => {} });
+    traceMode.init();
+    traceMode.setupControls();
     renderDictionaryReference(elements, dictionary);
     capture.enable();
     recompute();
